@@ -166,6 +166,7 @@ async def update_user(email, name, phone, dob, weight, club, category,
                          "dob": dob, "weight": weight, "club": club, "category": category, "location": location}})
     document = await database.User.find_one({"email":email})
     document.pop('_id', None)
+    print(document)
     return document
 
 async def remove_user(email):
@@ -196,7 +197,11 @@ async def user_image_upload(email: str, image: UploadFile = File(...)):
     
 async def fetch_user_image(email):
     user = await database.User.find_one({"email": email}, {"image": 1})
-    return user["image"]
+    if user is not None:
+        return user["image"]
+    else:
+        return None
+
 
 #Misc
 

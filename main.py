@@ -314,12 +314,13 @@ async def upload_user_img(email: str = Form(...), image: UploadFile = File(...))
     res = await user_image_upload(email, image)
     return res
 
-@app.get("/api/User/image/{email}")
+@app.get("/api/User/image/{email}", response_class=Response)
 async def get_user_img(email: str):
     image_data = await fetch_user_image(email)
     if image_data:
         return StreamingResponse(io.BytesIO(image_data), media_type="image/png")
-    raise HTTPException(404, f"There is no User with this email: {email}")
+    else:
+        return JSONResponse(content={"detail": f"There is no User with this email: {email}"}, status_code=404)
 
 #REGISTER/LOGIN
 
