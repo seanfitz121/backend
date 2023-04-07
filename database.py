@@ -15,7 +15,7 @@ from fastapi import File, UploadFile
 import base64
 
 
-client = motor.motor_asyncio.AsyncIOMotorClient('mongodb://localhost:27017')
+client = motor.motor_asyncio.AsyncIOMotorClient('mongodb+srv://fitzgibbonsean2:z12fyp12@z12fyp.ahjo5iq.mongodb.net/?retryWrites=true&w=majority')
 database = client.DashList
 collection = database.dash
 
