@@ -449,6 +449,7 @@ async def create_payment(request: Request):
         start_time = time.time()
         items = data.get('items', [])
         amount = calculate_order_amount(items)
+        
         end_time = time.time()
         print(f"Time taken to calculate order amount: {end_time - start_time:.3f} seconds")
 
@@ -460,6 +461,53 @@ async def create_payment(request: Request):
             automatic_payment_methods={
                 'enabled': True,
             },
+        )
+        end_time = time.time()
+        print(f"Time taken to create payment intent: {end_time - start_time:.3f} seconds")
+        print("After payment intent create")
+
+        start_time = time.time()
+        response = JSONResponse({
+            'clientSecret': intent['client_secret']
+        })
+        end_time = time.time()
+        print(f"Time taken to create JSON response: {end_time - start_time:.3f} seconds")
+
+        return response
+    except Exception as e:
+        return JSONResponse(content={'error': str(e)}, status_code=403)
+    
+@app.post('/create-payment-intent2')
+async def create_payment2(request: Request):
+    try:
+        start_time = time.time()
+        data = await request.json()
+        end_time = time.time()
+        print(f"Time taken to get JSON data: {end_time - start_time:.3f} seconds")
+
+        start_time = time.time()
+        items = data.get('items', [])
+        amount = sum(item['price'] for item in items)
+
+        
+        end_time = time.time()
+        print(f"Time taken to calculate order amount: {end_time - start_time:.3f} seconds")
+
+        start_time = time.time()
+        print("Before payment intent create")
+        intent = stripe.PaymentIntent.create(
+            amount=2000,
+            currency='eur',
+            payment_method_types=['card'],
+            payment_method_data={
+                'card': {
+                    'number': '4242424242424242',
+                    'exp_month': 12,
+                    'exp_year': 2034,
+                    'cvc': '567',
+                    'name': 'John Doe'  # <-- fix parameter name here
+                }
+            }
         )
         end_time = time.time()
         print(f"Time taken to create payment intent: {end_time - start_time:.3f} seconds")
