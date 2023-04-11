@@ -161,20 +161,16 @@ async def get_events():
     response = await fetch_all_events()
     return response
 
-@app.get("/api/events{name}", response_model=Events)
-async def get_event_by_id(name):
+@app.get("/api/events/by-name/{name}", response_model=Events)
+async def get_event_by_id(name: str):
     response = await fetch_one_event(name)
     if response:
         return response
     raise HTTPException(404, f"There is no Event item with this title: {name}")
 
-@app.get("/api/events{approved}", response_model=List[Events])
+@app.get("/api/events/by-approval", response_model=List[Events])
 async def get_events_by_approval1(approved: bool = False):
-    response = []
-    if approved:
-        response = await fetch_all_events_by_approval1(approved)
-    else:
-        response = await fetch_all_events()
+    response = await fetch_all_events_by_approval1(approved)
     if response:
         return response
     raise HTTPException(404, f"There are no events with status: {approved}")
