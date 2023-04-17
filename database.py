@@ -206,8 +206,15 @@ async def fetch_user_image(email):
 #Misc
 
 async def get_event_count1():
-    count = await database.events.count_documents({"location": "Limerick"})
-    return {"count": count}
+    events = await database.events.find().to_list(None)
+    counts = {}
+    for event in events:
+        if event["location"] in counts:
+            counts[event["location"]] += 1
+        else:
+            counts[event["location"]] = 1
+    return counts
+
 
 async def get_event_times():
     results_list = database.events.find({}, {"_id": 0, "results": 1})
