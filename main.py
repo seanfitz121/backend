@@ -42,12 +42,12 @@ settings = config.Settings()
 client = Client(settings.twilio_account_sid, settings.twilio_auth_token)
 
 secretkey = secrets.token_hex(32)
-stripe.api_key = "sk_test_51MgUmdAg9Km0gzmpEDI2M8ES9QLcec36ooBFJclyJ8m78Bqh2RlZ2I4JgsWmLsG2pbHy2LZ5ZtQIs9IPhuWCIVRL00xhD6zY9I"
+stripe.api_key = 
 
 print(settings.twilio_account_sid)
 print(settings.twilio_auth_token)
 
-SENDGRID_API_KEY = "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"
+SENDGRID_API_KEY = 
 
 from database import (
     fetch_one_dash,
